@@ -1,0 +1,136 @@
+import random
+
+# Base Character class
+class Character:
+    def __init__(self, name, health, attack_power):
+        self.name = name
+        self.health = health
+        self.attack_power = attack_power
+        self.max_health = health  
+
+    def attack(self, opponent):
+        damage = random.randint(self.attack_power - 5, self.attack_power + 5)
+        opponent.health -= damage
+        print(f"{self.name} attacks {opponent.name} for {damage} damage!")
+        if opponent.health <= 0:
+            print(f"{opponent.name} has been defeated!")
+
+    def heal(self):
+        heal_amount = random.randint(10, 20)
+        self.health = min(self.health + heal_amount, self.max_health)
+        print(f"{self.name} heals for {heal_amount}. Health: {self.health}/{self.max_health}")
+
+    def display_stats(self):
+        print(f"{self.name}'s Stats - Health: {self.health}/{self.max_health}, Attack Power: {self.attack_power}")
+
+
+# Warrior
+class Warrior(Character):
+    def __init__(self, name):
+        super().__init__(name, 140, 25)
+
+    def special_ability(self, opponent):
+        print("Power Strike!")
+        opponent.health -= 40
+
+
+# Mage
+class Mage(Character):
+    def __init__(self, name):
+        super().__init__(name, 100, 35)
+
+    def special_ability(self, opponent):
+        print("Fireball!")
+        opponent.health -= 45
+
+
+#  Archer
+class Archer(Character):
+    def __init__(self, name):
+        super().__init__(name, 110, 30)
+
+    def special_ability(self, opponent):
+        print("Quick Shot! (double attack)")
+        opponent.health -= 20
+        opponent.health -= 20
+
+    def evade(self):
+        print(f"{self.name} evades the next attack!")
+
+
+#  Paladin 
+class Paladin(Character):
+    def __init__(self, name):
+        super().__init__(name, 130, 20)
+
+    def special_ability(self, opponent):
+        print("Holy Strike!")
+        opponent.health -= 35
+
+    def divine_shield(self):
+        print(f"{self.name} blocks the next attack!")
+
+
+# Evil Wizard
+class EvilWizard(Character):
+    def __init__(self, name):
+        super().__init__(name, 150, 15)
+
+    def regenerate(self):
+        self.health += 5
+        print(f"{self.name} regenerates 5 health! Current health: {self.health}")
+
+
+def create_character():
+    print("Choose your character:")
+    print("1. Warrior")
+    print("2. Mage")
+    print("3. Archer")
+    print("4. Paladin")
+
+    choice = input("Enter choice: ")
+    name = input("Enter name: ")
+
+    if choice == '1':
+        return Warrior(name)
+    elif choice == '2':
+        return Mage(name)
+    elif choice == '3':
+        return Archer(name)
+    elif choice == '4':
+        return Paladin(name)
+    else:
+        return Warrior(name)
+
+
+def battle(player, wizard):
+    while player.health > 0 and wizard.health > 0:
+        print("\n1. Attack  2. Special  3. Heal  4. Stats")
+        choice = input("Choose: ")
+
+        if choice == '1':
+            player.attack(wizard)
+        elif choice == '2':
+            player.special_ability(wizard)
+        elif choice == '3':
+            player.heal()
+        elif choice == '4':
+            player.display_stats()
+
+        if wizard.health > 0:
+            wizard.regenerate()
+            wizard.attack(player)
+
+    if player.health <= 0:
+        print("You lost 💀")
+    else:
+        print("You defeated the Evil Wizard 🎉")
+
+
+def main():
+    player = create_character()
+    wizard = EvilWizard("Dark Wizard")
+    battle(player, wizard)
+
+
+main()
