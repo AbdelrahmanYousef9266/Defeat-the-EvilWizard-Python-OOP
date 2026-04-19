@@ -44,12 +44,14 @@ Inheritance → Character → Warrior, Mage, Archer, Paladin
 Encapsulation → Character attributes (health, attack power)
 Polymorphism → Different behaviors for special abilities
 
- Project Structure
+
+## Project Structure
 
 Defeat-Evil-Wizard/
 │
 ├── Defeat-the-Evil-Wizard.py
 └── README.md
+
 
 ## Project Presentation
 
